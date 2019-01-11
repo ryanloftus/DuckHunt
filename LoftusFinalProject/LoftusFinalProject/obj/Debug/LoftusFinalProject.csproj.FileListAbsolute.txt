@@ -1,0 +1,11 @@
+u:\documents\visual studio 2015\Projects\LoftusFinalProject\LoftusFinalProject\bin\Debug\LoftusFinalProject.exe.config
+\\SS20\S226 Students$\S300045745\Documents\Visual Studio 2015\Projects\LoftusFinalProject\LoftusFinalProject\bin\Debug\LoftusFinalProject.exe.config
+D:\LoftusFinalProject\LoftusFinalProject\bin\Debug\LoftusFinalProject.exe.config
+D:\LoftusFinalProject\LoftusFinalProject\bin\Debug\LoftusFinalProject.exe
+D:\LoftusFinalProject\LoftusFinalProject\bin\Debug\LoftusFinalProject.pdb
+D:\LoftusFinalProject\LoftusFinalProject\obj\Debug\LoftusFinalProject.csprojResolveAssemblyReference.cache
+D:\LoftusFinalProject\LoftusFinalProject\obj\Debug\LoftusFinalProject.Form1.resources
+D:\LoftusFinalProject\LoftusFinalProject\obj\Debug\LoftusFinalProject.Properties.Resources.resources
+D:\LoftusFinalProject\LoftusFinalProject\obj\Debug\LoftusFinalProject.csproj.GenerateResource.Cache
+D:\LoftusFinalProject\LoftusFinalProject\obj\Debug\LoftusFinalProject.exe
+D:\LoftusFinalProject\LoftusFinalProject\obj\Debug\LoftusFinalProject.pdb
