@@ -50,7 +50,7 @@ namespace LoftusFinalProject
         //create gravity constant integer
         int gravity = 15;
         //declare duck flying right image array
-        Image[] duckspriteRight = new Image[4];
+        Image[] duckSpriteRight = new Image[4];
         //declare ground variable
         double ground;
         //declare spawn point int
@@ -124,10 +124,10 @@ namespace LoftusFinalProject
             //assign value to ground
             ground = this.ClientSize.Height * 0.6;
             //add duck sprites to ducksprite right
-            duckspriteRight[0] = Image.FromFile(Application.StartupPath + @"\DuckSpriteRight0.png", true);
-            duckspriteRight[1] = Image.FromFile(Application.StartupPath + @"\DuckRight1.png", true);
-            duckspriteRight[2] = Image.FromFile(Application.StartupPath + @"\DuckRight2.png", true);
-            duckspriteRight[3] = Image.FromFile(Application.StartupPath + @"\DuckRight1.png", true);
+            duckSpriteRight[0] = Image.FromFile(Application.StartupPath + @"\duckSpriteRight0.png", true);
+            duckSpriteRight[1] = Image.FromFile(Application.StartupPath + @"\DuckRight1.png", true);
+            duckSpriteRight[2] = Image.FromFile(Application.StartupPath + @"\DuckRight2.png", true);
+            duckSpriteRight[3] = Image.FromFile(Application.StartupPath + @"\DuckRight1.png", true);
         }
 
         private void HowToPlayBtn_Click(object sender, EventArgs e)
@@ -144,7 +144,7 @@ namespace LoftusFinalProject
             //counter increase
             spriteCounter++;
             //if to check if counter should reset
-            if (spriteCounter == duckspriteRight.Length)
+            if (spriteCounter == duckSpriteRight.Length)
             {
                 //reset counter
                 spriteCounter = 0;
@@ -200,7 +200,7 @@ namespace LoftusFinalProject
                 {
                     //spawn duck and add duck to lists
                     duckRect.Add(new Rectangle(ranNum.Next(this.ClientSize.Width), Convert.ToInt32(ground), 100, 100));
-                    duckDX.Add(0);
+                    duckDX.Add(10);
                     duckDY.Add(-10);
                 }
                 //if runs to check if duck will spawn from right side (spawn point 1)
@@ -234,22 +234,25 @@ namespace LoftusFinalProject
         }
         private void Form1_MouseClick(object sender, MouseEventArgs e)
         {
-            //subtract 1 from players ammo
-            ammo--;
-            //for loop to run through
-            for (int i = 0; i < duckRect.Count; i++)
+            if (ammo > 0)
             {
-                //check for hit
-                if (duckRect[i].Contains(MousePosition))
+                //subtract 1 from players ammo
+                ammo--;
+                //for loop to run through
+                for (int i = 0; i < duckRect.Count; i++)
                 {
-                    //add to score
-                    playerScore += 250;
-                    //refund ammo
-                    ammo++;
-                    //stop horizontal movement
-                    duckDX[i] = 0;
-                    //start falling movement
-                    duckDY[i] = gravity;
+                    //check for hit
+                    if (duckRect[i].Contains(MousePosition))
+                    {
+                        //add to score
+                        playerScore += 250;
+                        //refund ammo
+                        ammo++;
+                        //stop horizontal movement
+                        duckDX[i] = 0;
+                        //start falling movement
+                        duckDY[i] = gravity;
+                    }
                 }
             }
         }
@@ -261,7 +264,7 @@ namespace LoftusFinalProject
             for (int i = 0; i < duckRect.Count; i++)
             {
                 //paint duck
-                e.Graphics.DrawImage(duckspriteRight[spriteCounter], duckRect[i]);
+                e.Graphics.DrawImage(duckSpriteRight[spriteCounter], duckRect[i]);
             }
         }
     }

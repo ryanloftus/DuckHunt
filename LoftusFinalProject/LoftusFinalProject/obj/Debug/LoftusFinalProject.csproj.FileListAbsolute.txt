@@ -9,3 +9,12 @@ D:\LoftusFinalProject\LoftusFinalProject\obj\Debug\LoftusFinalProject.Properties
 D:\LoftusFinalProject\LoftusFinalProject\obj\Debug\LoftusFinalProject.csproj.GenerateResource.Cache
 D:\LoftusFinalProject\LoftusFinalProject\obj\Debug\LoftusFinalProject.exe
 D:\LoftusFinalProject\LoftusFinalProject\obj\Debug\LoftusFinalProject.pdb
+C:\Users\Loftus\Documents\GitHub\DuckHunt\LoftusFinalProject\LoftusFinalProject\bin\Debug\LoftusFinalProject.exe.config
+C:\Users\Loftus\Documents\GitHub\DuckHunt\LoftusFinalProject\LoftusFinalProject\bin\Debug\LoftusFinalProject.exe
+C:\Users\Loftus\Documents\GitHub\DuckHunt\LoftusFinalProject\LoftusFinalProject\bin\Debug\LoftusFinalProject.pdb
+C:\Users\Loftus\Documents\GitHub\DuckHunt\LoftusFinalProject\LoftusFinalProject\obj\Debug\LoftusFinalProject.csprojResolveAssemblyReference.cache
+C:\Users\Loftus\Documents\GitHub\DuckHunt\LoftusFinalProject\LoftusFinalProject\obj\Debug\LoftusFinalProject.Form1.resources
+C:\Users\Loftus\Documents\GitHub\DuckHunt\LoftusFinalProject\LoftusFinalProject\obj\Debug\LoftusFinalProject.Properties.Resources.resources
+C:\Users\Loftus\Documents\GitHub\DuckHunt\LoftusFinalProject\LoftusFinalProject\obj\Debug\LoftusFinalProject.csproj.GenerateResource.Cache
+C:\Users\Loftus\Documents\GitHub\DuckHunt\LoftusFinalProject\LoftusFinalProject\obj\Debug\LoftusFinalProject.exe
+C:\Users\Loftus\Documents\GitHub\DuckHunt\LoftusFinalProject\LoftusFinalProject\obj\Debug\LoftusFinalProject.pdb
