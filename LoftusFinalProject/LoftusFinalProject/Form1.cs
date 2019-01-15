@@ -124,7 +124,7 @@ namespace LoftusFinalProject
             //assign value to ground
             ground = this.ClientSize.Height * 0.6;
             //add duck sprites to ducksprite right
-            duckSpriteRight[0] = Image.FromFile(Application.StartupPath + @"\duckSpriteRight0.png", true);
+            duckSpriteRight[0] = Image.FromFile(Application.StartupPath + @"\duckRight0.png", true);
             duckSpriteRight[1] = Image.FromFile(Application.StartupPath + @"\DuckRight1.png", true);
             duckSpriteRight[2] = Image.FromFile(Application.StartupPath + @"\DuckRight2.png", true);
             duckSpriteRight[3] = Image.FromFile(Application.StartupPath + @"\DuckRight1.png", true);
@@ -200,7 +200,7 @@ namespace LoftusFinalProject
                 {
                     //spawn duck and add duck to lists
                     duckRect.Add(new Rectangle(ranNum.Next(this.ClientSize.Width), Convert.ToInt32(ground), 100, 100));
-                    duckDX.Add(10);
+                    duckDX.Add(ranNum.Next(2) == 1 ? 10 : -10);
                     duckDY.Add(-10);
                 }
                 //if runs to check if duck will spawn from right side (spawn point 1)
