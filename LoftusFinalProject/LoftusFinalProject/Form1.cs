@@ -51,6 +51,12 @@ namespace LoftusFinalProject
         int gravity = 15;
         //declare duck flying right image array
         Image[] duckSpriteRight = new Image[4];
+        //declare duck flying left image array
+        Image[] duckSpriteLeft = new Image[4];
+        //declare duck falling image array
+        Image[] duckSpriteFalling = new Image[2];
+        //declare duck shot image variable
+        Image duckShot = Image.FromFile(Application.StartupPath + @"\DuckShot.png");
         //declare ground variable
         double ground;
         //declare spawn point int
@@ -124,10 +130,18 @@ namespace LoftusFinalProject
             //assign value to ground
             ground = this.ClientSize.Height * 0.6;
             //add duck sprites to ducksprite right
-            duckSpriteRight[0] = Image.FromFile(Application.StartupPath + @"\duckRight0.png", true);
+            duckSpriteRight[0] = Image.FromFile(Application.StartupPath + @"\DuckRight0.png", true);
             duckSpriteRight[1] = Image.FromFile(Application.StartupPath + @"\DuckRight1.png", true);
             duckSpriteRight[2] = Image.FromFile(Application.StartupPath + @"\DuckRight2.png", true);
             duckSpriteRight[3] = Image.FromFile(Application.StartupPath + @"\DuckRight1.png", true);
+            //add duck sprites to ducksprite left
+            duckSpriteLeft[0] = Image.FromFile(Application.StartupPath + @"\DuckLeft0.png", true);
+            duckSpriteLeft[1] = Image.FromFile(Application.StartupPath + @"\DuckLeft1.png", true);
+            duckSpriteLeft[2] = Image.FromFile(Application.StartupPath + @"\DuckLeft2.png", true);
+            duckSpriteLeft[3] = Image.FromFile(Application.StartupPath + @"\DuckLeft1.png", true);
+            //add duck sprites to ducksprite falling
+            duckSpriteFalling[0] = Image.FromFile(Application.StartupPath + @"\DuckDeadRight.png", true);
+            duckSpriteFalling[1] = Image.FromFile(Application.StartupPath + @"\DuckDeadLeft.png", true);
         }
 
         private void HowToPlayBtn_Click(object sender, EventArgs e)
@@ -190,36 +204,7 @@ namespace LoftusFinalProject
                     ammo = 3;
                 }
             }
-            //if runs when there are less ducks than the current round number
-            if (duckRect.Count < round)
-            {
-                //generate spawn point
-                spawnPoint = ranNum.Next(3);
-                //if runs to check if duck will spawn at bottom (spawn point 0)
-                if (spawnPoint == 0)
-                {
-                    //spawn duck and add duck to lists
-                    duckRect.Add(new Rectangle(ranNum.Next(this.ClientSize.Width), Convert.ToInt32(ground), 100, 100));
-                    duckDX.Add(ranNum.Next(2) == 1 ? 10 : -10);
-                    duckDY.Add(-10);
-                }
-                //if runs to check if duck will spawn from right side (spawn point 1)
-                if (spawnPoint == 1)
-                {
-                    //spawn duck and add to lists
-                    duckRect.Add(new Rectangle(this.ClientSize.Width, ranNum.Next(Convert.ToInt32(ground)), 100, 100));
-                    duckDX.Add(-10);
-                    duckDY.Add(0);
-                }
-                //if runs to check if duck will spawn from left side (spawn point 2)
-                if (spawnPoint == 2)
-                {
-                    //spawn duck and add to lists
-                    duckRect.Add(new Rectangle(-100, ranNum.Next(Convert.ToInt32(ground)), 100, 100));
-                    duckDX.Add(10);
-                    duckDY.Add(0);
-                }
-            }
+            SpawnDuck();
         }
         private void StartBtn_Click(object sender, EventArgs e)
         {
@@ -234,6 +219,7 @@ namespace LoftusFinalProject
         }
         private void Form1_MouseClick(object sender, MouseEventArgs e)
         {
+            //if checks if player has ammo
             if (ammo > 0)
             {
                 //subtract 1 from players ammo
@@ -263,8 +249,77 @@ namespace LoftusFinalProject
             //run through list
             for (int i = 0; i < duckRect.Count; i++)
             {
-                //paint duck
-                e.Graphics.DrawImage(duckSpriteRight[spriteCounter], duckRect[i]);
+                //if statement checks if duck is flying upward
+                if (duckDY[i] < 0)
+                {
+                    //if statement checks if duck is flying right
+                    if (duckDX[i] > 0)
+                    {
+                        //paint duck
+                        e.Graphics.DrawImage(duckSpriteRight[spriteCounter], duckRect[i]);
+                    }
+                    //else if checks if duck is flying left
+                    else if (duckDX[i] < 0)
+                    {
+                        //paint duck
+                        e.Graphics.DrawImage(duckSpriteLeft[spriteCounter], duckRect[i]);
+                    }
+                }
+                //else
+                else
+                {
+                    //if checks if duck is flying right
+                    if (duckDX[i] > 0)
+                    {
+                        //paint duck
+                        e.Graphics.DrawImage(duckSpriteRight[spriteCounter], duckRect[i]);
+                    }
+                    //else if checks if duck is flying left
+                    else if (duckDX[i] < 0)
+                    {
+                        //paint duck
+                        e.Graphics.DrawImage(duckSpriteLeft[spriteCounter], duckRect[i]);
+                    }
+                    //else
+                    else
+                    {
+                        //paint duck
+                        e.Graphics.DrawImage(duckSpriteFalling[spriteCounter % 2], duckRect[i]);
+                    }
+                }
+            }
+        }
+        private void SpawnDuck()
+        {
+            //if runs when there are less ducks than the current round number
+            if (duckRect.Count < round)
+            {
+                //generate spawn point
+                spawnPoint = ranNum.Next(3);
+                //if runs to check if duck will spawn at bottom (spawn point 0)
+                if (spawnPoint == 0)
+                {
+                    //spawn duck and add duck to lists
+                    duckRect.Add(new Rectangle(ranNum.Next(this.ClientSize.Width), Convert.ToInt32(ground), 100, 100));
+                    duckDX.Add(ranNum.Next(2) == 1 ? 8 : -8);
+                    duckDY.Add(-8);
+                }
+                //if runs to check if duck will spawn from right side (spawn point 1)
+                if (spawnPoint == 1)
+                {
+                    //spawn duck and add to lists
+                    duckRect.Add(new Rectangle(this.ClientSize.Width, ranNum.Next(Convert.ToInt32(ground)), 100, 100));
+                    duckDX.Add(-10);
+                    duckDY.Add(0);
+                }
+                //if runs to check if duck will spawn from left side (spawn point 2)
+                if (spawnPoint == 2)
+                {
+                    //spawn duck and add to lists
+                    duckRect.Add(new Rectangle(-100, ranNum.Next(Convert.ToInt32(ground)), 100, 100));
+                    duckDX.Add(10);
+                    duckDY.Add(0);
+                }
             }
         }
     }
