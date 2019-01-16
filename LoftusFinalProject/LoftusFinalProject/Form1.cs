@@ -7,6 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using System.IO;
 //Ryan Loftus
 //December 11 2018
 //ICS 3U
@@ -63,6 +64,8 @@ namespace LoftusFinalProject
         int spawnPoint = 0;
         //duckspritecounter int
         int spriteCounter = 0;
+        //declare hi score variable
+        int hiScore;
         private void Form1_Load(object sender, EventArgs e)
         {
             //double buffered
@@ -193,17 +196,17 @@ namespace LoftusFinalProject
                     //MessageBox.Show("Game Over!");
                     //change round back to 0
                     round = 0;
-                    //if to check if round should increase
                 }
                 //else if runs if round should increase
                 else if (playerScore / round == 500 * round)
                 {
                     //next round
                     round++;
-                    //reload
+                    //reload ammo
                     ammo = 3;
                 }
             }
+            //spawn duck method
             SpawnDuck();
         }
         private void StartBtn_Click(object sender, EventArgs e)
@@ -240,6 +243,24 @@ namespace LoftusFinalProject
                         duckDY[i] = gravity;
                     }
                 }
+            }
+            //declare stream writer
+            StreamWriter txtWriter = new StreamWriter(Application.StartupPath + @"\hi score.txt", false);
+            //declare stream reader
+            StreamReader txtReader;
+            //check for hi score file
+            if (File.Exists(Application.StartupPath + @"\hi score.txt"))
+            {
+                //declares reader value
+                txtReader = new StreamReader(Application.StartupPath + @"\hi score.txt", true);
+                //get value of hi score into hi score variable
+                hiScore = Convert.ToInt32(txtReader.ReadLine());
+            }
+            //if to check if hi score has been beaten
+            if (hiScore < playerScore)
+            {
+                //use stream writer
+                txtWriter.WriteLine(playerScore);
             }
         }
         private void Form1_Paint(object sender, PaintEventArgs e)
