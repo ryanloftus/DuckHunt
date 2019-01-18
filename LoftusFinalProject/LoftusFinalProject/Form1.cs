@@ -8,6 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.IO;
+using System.Drawing.Text;
 //Ryan Loftus
 //December 11 2018
 //ICS 3U
@@ -36,6 +37,8 @@ namespace LoftusFinalProject
         Button startBtn = new Button();
         //declare how to play button
         Button howToPlayBtn = new Button();
+        //declare menu button
+        Button MenuBtn = new Button();
         //declare sprite timer
         Timer spriteTimer = new Timer();
         //declare player score string
@@ -66,6 +69,11 @@ namespace LoftusFinalProject
         int spriteCounter = 0;
         //declare hi score variable
         int hiScore;
+        //declare font variable
+        PrivateFontCollection fontCollection;        //add font
+        Font customFont;
+        //declare how to play rect
+        Rectangle HTPRect;
         private void Form1_Load(object sender, EventArgs e)
         {
             //double buffered
@@ -116,6 +124,20 @@ namespace LoftusFinalProject
             howToPlayBtn.Click += HowToPlayBtn_Click;
             //add how to play button to form
             this.Controls.Add(howToPlayBtn);
+            //set horizontal location of how to play button
+            MenuBtn.Left = 0;
+            //set vertical location of how to play button
+            MenuBtn.Top = 0;
+            //make start button visible
+            MenuBtn.Visible = true;
+            //set start button size
+            MenuBtn.Width = 50;
+            //set start button size
+            MenuBtn.Height = 50;
+            //set start button text
+            MenuBtn.Text = "Menu";
+            //create how to play button method
+            MenuBtn.Click += MenuBtn_Click;
             //create form 1 paint
             this.Paint += Form1_Paint;
             //create mouse click mehtod
@@ -145,6 +167,26 @@ namespace LoftusFinalProject
             //add duck sprites to ducksprite falling
             duckSpriteFalling[0] = Image.FromFile(Application.StartupPath + @"\DuckDeadRight.png", true);
             duckSpriteFalling[1] = Image.FromFile(Application.StartupPath + @"\DuckDeadLeft.png", true);
+            //setup font
+            fontCollection = new PrivateFontCollection();
+            fontCollection.AddFontFile(Application.StartupPath + @"\Font.TTF");
+            customFont = new Font(fontCollection.Families[0], 16);
+            //add values to HTPRect
+            HTPRect = new Rectangle(this.ClientSize.Width / 3, this.ClientSize.Height, this.ClientSize.Width / 3, this.ClientSize.Height);
+        }
+
+        private void MenuBtn_Click(object sender, EventArgs e)
+        {
+            //remove menu button from form
+            this.Controls.Remove(MenuBtn);
+            //add start button to form
+            this.Controls.Add(startBtn);
+            //add how to play button
+            this.Controls.Add(howToPlayBtn);
+            //move how to play text off screen
+            HTPRect.Y = this.ClientSize.Height;
+            //set round to 0
+            round = 0;
         }
 
         private void HowToPlayBtn_Click(object sender, EventArgs e)
@@ -153,7 +195,10 @@ namespace LoftusFinalProject
             this.Controls.Remove(startBtn);
             //remove how to play button from form
             this.Controls.Remove(howToPlayBtn);
-            //show text explaining how to play
+            //add text explaining how to play
+            HTPRect.Y = this.ClientSize.Height / 8;
+            //add menu button to form
+            this.Controls.Add(MenuBtn);
         }
 
         private void SpriteTimer_Tick(object sender, EventArgs e)
@@ -196,6 +241,16 @@ namespace LoftusFinalProject
                     //MessageBox.Show("Game Over!");
                     //change round back to 0
                     round = 0;
+                    //if to check if hi score has been beaten
+                    if (hiScore < playerScore)
+                    {
+                        //declare stream writer
+                        StreamWriter txtWriter = new StreamWriter(Application.StartupPath + @"\hi score.txt", false);
+                        //use stream writer
+                        txtWriter.WriteLine(playerScore);
+                        //close stream writer
+                        txtWriter.Close();
+                    }
                 }
                 //else if runs if round should increase
                 else if (playerScore / round == 500 * round)
@@ -215,10 +270,24 @@ namespace LoftusFinalProject
             this.Controls.Remove(startBtn);
             //remove how to play button from form
             this.Controls.Remove(howToPlayBtn);
+            //add menu button to form
+            this.Controls.Add(MenuBtn);
             //set ammo
             ammo = 3;
             //set round to 1
-            round = 1;
+            round = 1;            
+            //declare stream reader
+            StreamReader txtReader;
+            //check for hi score file
+            if (File.Exists(Application.StartupPath + @"\hi score.txt"))
+            {
+                //declares reader value
+                txtReader = new StreamReader(Application.StartupPath + @"\hi score.txt", true);
+                //get value of hi score into hi score variable
+                hiScore = Convert.ToInt32(txtReader.ReadLine());        
+                //close text reader
+                txtReader.Close();
+            }
         }
         private void Form1_MouseClick(object sender, MouseEventArgs e)
         {
@@ -244,29 +313,15 @@ namespace LoftusFinalProject
                     }
                 }
             }
-            //declare stream writer
-            StreamWriter txtWriter = new StreamWriter(Application.StartupPath + @"\hi score.txt", false);
-            //declare stream reader
-            StreamReader txtReader;
-            //check for hi score file
-            if (File.Exists(Application.StartupPath + @"\hi score.txt"))
-            {
-                //declares reader value
-                txtReader = new StreamReader(Application.StartupPath + @"\hi score.txt", true);
-                //get value of hi score into hi score variable
-                hiScore = Convert.ToInt32(txtReader.ReadLine());
-            }
-            //if to check if hi score has been beaten
-            if (hiScore < playerScore)
-            {
-                //use stream writer
-                txtWriter.WriteLine(playerScore);
-            }
+
+
         }
         private void Form1_Paint(object sender, PaintEventArgs e)
         {
             //paint background rect
             e.Graphics.DrawImage(backgroundImage, backgroundRect);
+            //paint text on how to play rect
+            e.Graphics.DrawString("Shoot ducks flying across the screen by clicking to gain points and progress through rounds and set a HI SCORE! The higher the round the more ducks that will spawn. You will start with 3 ammo that will be refunded each round. 1 ammo will be refunded when a shot hits. Remember that a bullet will take time to travel so shoot accordingly.", customFont, Brushes.Black, HTPRect);
             //run through list
             for (int i = 0; i < duckRect.Count; i++)
             {
