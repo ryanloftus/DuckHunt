@@ -18,3 +18,14 @@ C:\Users\Loftus\Documents\GitHub\DuckHunt\LoftusFinalProject\LoftusFinalProject\
 C:\Users\Loftus\Documents\GitHub\DuckHunt\LoftusFinalProject\LoftusFinalProject\obj\Debug\LoftusFinalProject.csproj.GenerateResource.Cache
 C:\Users\Loftus\Documents\GitHub\DuckHunt\LoftusFinalProject\LoftusFinalProject\obj\Debug\LoftusFinalProject.exe
 C:\Users\Loftus\Documents\GitHub\DuckHunt\LoftusFinalProject\LoftusFinalProject\obj\Debug\LoftusFinalProject.pdb
+D:\LoftusFinalProject\LoftusFinalProject\bin\Debug\AudioPlayer.pdb
+F:\LoftusFinalProject\LoftusFinalProject\bin\Debug\LoftusFinalProject.exe.config
+F:\LoftusFinalProject\LoftusFinalProject\obj\Debug\LoftusFinalProject.exe
+F:\LoftusFinalProject\LoftusFinalProject\obj\Debug\LoftusFinalProject.pdb
+F:\LoftusFinalProject\LoftusFinalProject\bin\Debug\LoftusFinalProject.exe
+F:\LoftusFinalProject\LoftusFinalProject\bin\Debug\LoftusFinalProject.pdb
+F:\LoftusFinalProject\LoftusFinalProject\bin\Debug\AudioPlayer.pdb
+F:\LoftusFinalProject\LoftusFinalProject\obj\Debug\LoftusFinalProject.csprojResolveAssemblyReference.cache
+F:\LoftusFinalProject\LoftusFinalProject\obj\Debug\LoftusFinalProject.Form1.resources
+F:\LoftusFinalProject\LoftusFinalProject\obj\Debug\LoftusFinalProject.Properties.Resources.resources
+F:\LoftusFinalProject\LoftusFinalProject\obj\Debug\LoftusFinalProject.csproj.GenerateResource.Cache

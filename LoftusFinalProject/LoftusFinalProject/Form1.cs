@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.IO;
 using System.Drawing.Text;
+using AudioPlayer;
 //Ryan Loftus
 //December 11 2018
 //ICS 3U
@@ -74,6 +75,12 @@ namespace LoftusFinalProject
         Font customFont;
         //declare how to play rect
         Rectangle HTPRect;
+        //declare music player
+        AudioFilePlayer Music;
+        //declare shootSound player
+        AudioFilePlayer shootSound;
+        //declare reload timer
+        Timer reloadTimer = new Timer();
         private void Form1_Load(object sender, EventArgs e)
         {
             //double buffered
@@ -82,10 +89,14 @@ namespace LoftusFinalProject
             spriteTimer.Interval = 250;
             //set refresh timer interval
             refreshTimer.Interval = (1000 / 60);
+            //set reload timer interval
+            reloadTimer.Interval = 500;
             //start sprite timer
             spriteTimer.Start();
             //start refresh timer
-            refreshTimer.Start();            
+            refreshTimer.Start();
+            //create reload timer tick
+            reloadTimer.Tick += ReloadTimer_Tick;
             //set form location
             this.Location = new Point(0, 0);
             //set form size
@@ -173,6 +184,18 @@ namespace LoftusFinalProject
             customFont = new Font(fontCollection.Families[0], 16);
             //add values to HTPRect
             HTPRect = new Rectangle(this.ClientSize.Width / 3, this.ClientSize.Height, this.ClientSize.Width / 3, this.ClientSize.Height);
+            //setup music audio player
+            Music = new AudioFilePlayer();
+            Music.setAudioFile(Application.StartupPath + @"\DuckHuntMedley.mp3");
+            //set up shootSound player
+            shootSound = new AudioFilePlayer();
+            shootSound.setAudioFile(Application.StartupPath + @"\ShootingSound.wav");
+        }
+
+        private void ReloadTimer_Tick(object sender, EventArgs e)
+        {
+            //stop reload timer
+            reloadTimer.Stop();
         }
 
         private void MenuBtn_Click(object sender, EventArgs e)
@@ -292,8 +315,10 @@ namespace LoftusFinalProject
         private void Form1_MouseClick(object sender, MouseEventArgs e)
         {
             //if checks if player has ammo
-            if (ammo > 0)
+            if (ammo > 0 && reloadTimer.Enabled == false)
             {
+                //play shooting sound
+                shootSound.play();
                 //subtract 1 from players ammo
                 ammo--;
                 //for loop to run through
@@ -312,9 +337,9 @@ namespace LoftusFinalProject
                         duckDY[i] = gravity;
                     }
                 }
+                //start reload timer
+                reloadTimer.Start();
             }
-
-
         }
         private void Form1_Paint(object sender, PaintEventArgs e)
         {
@@ -365,6 +390,8 @@ namespace LoftusFinalProject
                 }
             }
         }
+        
+    
         private void SpawnDuck()
         {
             //if runs when there are less ducks than the current round number
