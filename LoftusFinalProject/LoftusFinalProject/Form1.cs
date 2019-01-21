@@ -24,8 +24,6 @@ namespace LoftusFinalProject
         }
         //declare refresh timer
         Timer refreshTimer = new Timer();
-        //declare duck hit box array
-        int[,] hitbox = new int[50, 50];
         //declare duck rectangle array
         List <Rectangle> duckRect = new List <Rectangle>();
         //declare duckDX list
@@ -62,6 +60,8 @@ namespace LoftusFinalProject
         Image[] duckSpriteFalling = new Image[2];
         //declare duck shot image variable
         Image duckShot = Image.FromFile(Application.StartupPath + @"\DuckShot.png");
+        //declare ammo image array
+        Image[] ammoSprite = new Image[4];
         //declare ground variable
         double ground;
         //declare spawn point int
@@ -71,7 +71,8 @@ namespace LoftusFinalProject
         //declare hi score variable
         int hiScore;
         //declare font variable
-        PrivateFontCollection fontCollection;        //add font
+        PrivateFontCollection fontCollection;
+        //add font
         Font customFont;
         //declare how to play rect
         Rectangle HTPRect;
@@ -81,6 +82,20 @@ namespace LoftusFinalProject
         AudioFilePlayer shootSound;
         //declare reload timer
         Timer reloadTimer = new Timer();
+        //declare ammo display rectangle
+        Rectangle ammoDisplayRect;
+        //declare score display rect
+        Rectangle playerScoreDisplayRect;
+        //declare score display image variable
+        Image scoreDisplaySprite = Image.FromFile(Application.StartupPath + @"\ScoreBlank.png");
+        //declare number image array
+        Image[] numSprites = new Image[10];
+        //declare game over image variable
+        Image gameOverSprite = Image.FromFile(Application.StartupPath + @"\GAMEOVER.png");
+        //declare game over rectangle
+        Rectangle gameOverRect;
+        //declare game over bool
+        bool isGameOver = false;
         private void Form1_Load(object sender, EventArgs e)
         {
             //double buffered
@@ -178,6 +193,22 @@ namespace LoftusFinalProject
             //add duck sprites to ducksprite falling
             duckSpriteFalling[0] = Image.FromFile(Application.StartupPath + @"\DuckDeadRight.png", true);
             duckSpriteFalling[1] = Image.FromFile(Application.StartupPath + @"\DuckDeadLeft.png", true);
+            //add ammo box images to array
+            ammoSprite[0] = Image.FromFile(Application.StartupPath + @"\Ammo0.png", true);
+            ammoSprite[1] = Image.FromFile(Application.StartupPath + @"\Ammo1.png", true);
+            ammoSprite[2] = Image.FromFile(Application.StartupPath + @"\Ammo2.png", true);
+            ammoSprite[3] = Image.FromFile(Application.StartupPath + @"\Ammo3.png", true);
+            //add number sprites to num sprites image array
+            numSprites[0] = Image.FromFile(Application.StartupPath + @"\0.png", true);
+            numSprites[1] = Image.FromFile(Application.StartupPath + @"\1.png", true);
+            numSprites[2] = Image.FromFile(Application.StartupPath + @"\2.png", true);
+            numSprites[3] = Image.FromFile(Application.StartupPath + @"\3.png", true);
+            numSprites[4] = Image.FromFile(Application.StartupPath + @"\4.png", true);
+            numSprites[5] = Image.FromFile(Application.StartupPath + @"\5.png", true);
+            numSprites[6] = Image.FromFile(Application.StartupPath + @"\6.png", true);
+            numSprites[7] = Image.FromFile(Application.StartupPath + @"\7.png", true);
+            numSprites[8] = Image.FromFile(Application.StartupPath + @"\8.png", true);
+            numSprites[9] = Image.FromFile(Application.StartupPath + @"\9.png", true);
             //setup font
             fontCollection = new PrivateFontCollection();
             fontCollection.AddFontFile(Application.StartupPath + @"\Font.TTF");
@@ -187,9 +218,17 @@ namespace LoftusFinalProject
             //setup music audio player
             Music = new AudioFilePlayer();
             Music.setAudioFile(Application.StartupPath + @"\DuckHuntMedley.mp3");
+            //play music on loop
+            Music.playLooping();
             //set up shootSound player
             shootSound = new AudioFilePlayer();
             shootSound.setAudioFile(Application.StartupPath + @"\ShootingSound.wav");
+            //place ammo display rect on form
+            ammoDisplayRect = new Rectangle(Convert.ToInt32(this.ClientSize.Width * (1.0 / 8.0)), Convert.ToInt32(this.ClientSize.Height * (5.0 / 6.0)), ammoSprite[0].Width * 5, ammoSprite[0].Height * 5);
+            //place score display rect on form
+            playerScoreDisplayRect = new Rectangle(Convert.ToInt32(this.ClientSize.Width * (3.0 / 4.0)), Convert.ToInt32(this.ClientSize.Height * (5.0 / 6.0)), scoreDisplaySprite.Width * 5, scoreDisplaySprite.Height * 5);
+            //place game over rect on form
+            gameOverRect = new Rectangle((this.ClientSize.Width / 2) - Convert.ToInt32(gameOverSprite.Width * (5.0 / 2.0)), this.ClientSize.Height / 2, gameOverSprite.Width * 5, gameOverSprite.Height * 5);
         }
 
         private void ReloadTimer_Tick(object sender, EventArgs e)
@@ -210,6 +249,8 @@ namespace LoftusFinalProject
             HTPRect.Y = this.ClientSize.Height;
             //set round to 0
             round = 0;
+            //set is game over to false
+            isGameOver = false;
         }
 
         private void HowToPlayBtn_Click(object sender, EventArgs e)
@@ -231,7 +272,7 @@ namespace LoftusFinalProject
             //if to check if counter should reset
             if (spriteCounter == duckSpriteRight.Length)
             {
-                //reset counter
+                //reset sprite counter
                 spriteCounter = 0;
             }
         }
@@ -252,7 +293,6 @@ namespace LoftusFinalProject
                     duckDX.RemoveAt(i);
                     duckDY.RemoveAt(i);
                 }
-
             }
             //if to run when game has started
             if (round > 0)
@@ -260,8 +300,6 @@ namespace LoftusFinalProject
                 //if checks if ammo is empty
                 if (ammo == 0)
                 {
-                    //game over
-                    //MessageBox.Show("Game Over!");
                     //change round back to 0
                     round = 0;
                     //if to check if hi score has been beaten
@@ -274,6 +312,8 @@ namespace LoftusFinalProject
                         //close stream writer
                         txtWriter.Close();
                     }
+                    //set is game over to true
+                    isGameOver = true;
                 }
                 //else if runs if round should increase
                 else if (playerScore / round == 500 * round)
@@ -311,6 +351,8 @@ namespace LoftusFinalProject
                 //close text reader
                 txtReader.Close();
             }
+            //reset score
+            playerScore = 0;
         }
         private void Form1_MouseClick(object sender, MouseEventArgs e)
         {
@@ -381,13 +423,29 @@ namespace LoftusFinalProject
                         //paint duck
                         e.Graphics.DrawImage(duckSpriteLeft[spriteCounter], duckRect[i]);
                     }
-                    //else
+                    //else if duck is not moving horizontally
                     else
                     {
                         //paint duck
                         e.Graphics.DrawImage(duckSpriteFalling[spriteCounter % 2], duckRect[i]);
                     }
                 }
+            }
+            //paint ammo box on form
+            e.Graphics.DrawImage(ammoSprite[ammo], ammoDisplayRect);
+            //paint score box on form
+            e.Graphics.DrawImage(scoreDisplaySprite, playerScoreDisplayRect);
+            //for loop to run through score
+            for (int i = 0; i < 6; i++)
+            {
+                //check value ith character of score
+                //i = Convert.ToString(playerScore)[i];
+                //e.Graphics.DrawImage()
+            }
+            if (ammo == 0 && isGameOver == true)
+            {
+                //paint game over image on screen
+                e.Graphics.DrawImage(gameOverSprite, gameOverRect);
             }
         }
         
