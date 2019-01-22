@@ -88,14 +88,14 @@ namespace LoftusFinalProject
         Rectangle playerScoreDisplayRect;
         //declare score display image variable
         Image scoreDisplaySprite = Image.FromFile(Application.StartupPath + @"\ScoreBlank.png");
-        //declare number image array
-        Image[] numSprites = new Image[10];
         //declare game over image variable
         Image gameOverSprite = Image.FromFile(Application.StartupPath + @"\GAMEOVER.png");
         //declare game over rectangle
         Rectangle gameOverRect;
         //declare game over bool
         bool isGameOver = false;
+        //declare score rect
+        Rectangle scoreRect;
         private void Form1_Load(object sender, EventArgs e)
         {
             //double buffered
@@ -198,17 +198,6 @@ namespace LoftusFinalProject
             ammoSprite[1] = Image.FromFile(Application.StartupPath + @"\Ammo1.png", true);
             ammoSprite[2] = Image.FromFile(Application.StartupPath + @"\Ammo2.png", true);
             ammoSprite[3] = Image.FromFile(Application.StartupPath + @"\Ammo3.png", true);
-            //add number sprites to num sprites image array
-            numSprites[0] = Image.FromFile(Application.StartupPath + @"\0.png", true);
-            numSprites[1] = Image.FromFile(Application.StartupPath + @"\1.png", true);
-            numSprites[2] = Image.FromFile(Application.StartupPath + @"\2.png", true);
-            numSprites[3] = Image.FromFile(Application.StartupPath + @"\3.png", true);
-            numSprites[4] = Image.FromFile(Application.StartupPath + @"\4.png", true);
-            numSprites[5] = Image.FromFile(Application.StartupPath + @"\5.png", true);
-            numSprites[6] = Image.FromFile(Application.StartupPath + @"\6.png", true);
-            numSprites[7] = Image.FromFile(Application.StartupPath + @"\7.png", true);
-            numSprites[8] = Image.FromFile(Application.StartupPath + @"\8.png", true);
-            numSprites[9] = Image.FromFile(Application.StartupPath + @"\9.png", true);
             //setup font
             fontCollection = new PrivateFontCollection();
             fontCollection.AddFontFile(Application.StartupPath + @"\Font.TTF");
@@ -229,6 +218,8 @@ namespace LoftusFinalProject
             playerScoreDisplayRect = new Rectangle(Convert.ToInt32(this.ClientSize.Width * (3.0 / 4.0)), Convert.ToInt32(this.ClientSize.Height * (5.0 / 6.0)), scoreDisplaySprite.Width * 5, scoreDisplaySprite.Height * 5);
             //place game over rect on form
             gameOverRect = new Rectangle((this.ClientSize.Width / 2) - Convert.ToInt32(gameOverSprite.Width * (5.0 / 2.0)), this.ClientSize.Height / 2, gameOverSprite.Width * 5, gameOverSprite.Height * 5);
+            //place score rect on form
+            scoreRect = new Rectangle(Convert.ToInt32(this.ClientSize.Width * (3.0 / 4.0)) + scoreDisplaySprite.Width, Convert.ToInt32(this.ClientSize.Height * (5.0 / 6.0) + scoreDisplaySprite.Height), scoreDisplaySprite.Width * 5, scoreDisplaySprite.Height * 5);
         }
 
         private void ReloadTimer_Tick(object sender, EventArgs e)
@@ -367,12 +358,16 @@ namespace LoftusFinalProject
                 for (int i = 0; i < duckRect.Count; i++)
                 {
                     //check for hit
-                    if (duckRect[i].Contains(MousePosition))
+                    if (duckRect[i].Contains(e.Location))
                     {
                         //add to score
                         playerScore += 250;
-                        //refund ammo
-                        ammo++;
+                        //if runs if ammo 
+                        if (ammo < 3)
+                        {
+                            //refund ammo
+                            ammo++;
+                        }
                         //stop horizontal movement
                         duckDX[i] = 0;
                         //start falling movement
@@ -388,7 +383,9 @@ namespace LoftusFinalProject
             //paint background rect
             e.Graphics.DrawImage(backgroundImage, backgroundRect);
             //paint text on how to play rect
-            e.Graphics.DrawString("Shoot ducks flying across the screen by clicking to gain points and progress through rounds and set a HI SCORE! The higher the round the more ducks that will spawn. You will start with 3 ammo that will be refunded each round. 1 ammo will be refunded when a shot hits. Remember that a bullet will take time to travel so shoot accordingly.", customFont, Brushes.Black, HTPRect);
+            e.Graphics.DrawString("Shoot ducks flying across the screen by clicking to gain points and progress through rounds and set a HI SCORE! The higher the round the more ducks that will spawn. You will start with 3 ammo that will be refunded each round. 1 ammo will be refunded when a shot hits.", customFont, Brushes.Black, HTPRect);
+            //paint score
+            e.Graphics.DrawString(playerScore.ToString(), customFont, Brushes.White, scoreRect);
             //run through list
             for (int i = 0; i < duckRect.Count; i++)
             {
@@ -435,13 +432,9 @@ namespace LoftusFinalProject
             e.Graphics.DrawImage(ammoSprite[ammo], ammoDisplayRect);
             //paint score box on form
             e.Graphics.DrawImage(scoreDisplaySprite, playerScoreDisplayRect);
-            //for loop to run through score
-            for (int i = 0; i < 6; i++)
-            {
-                //check value ith character of score
-                //i = Convert.ToString(playerScore)[i];
-                //e.Graphics.DrawImage()
-            }
+            //paint score
+            e.Graphics.DrawString(playerScore.ToString(), customFont, Brushes.White, scoreRect);
+            //if runs while game is over
             if (ammo == 0 && isGameOver == true)
             {
                 //paint game over image on screen
