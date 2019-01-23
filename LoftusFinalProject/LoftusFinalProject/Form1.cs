@@ -240,6 +240,8 @@ namespace LoftusFinalProject
             HTPRect.Y = this.ClientSize.Height;
             //set round to 0
             round = 0;
+            //reset ammo to 0
+            ammo = 0;
             //set is game over to false
             isGameOver = false;
         }
@@ -271,20 +273,8 @@ namespace LoftusFinalProject
         {
             //refresh screen
             this.Invalidate();
-            //run through lists
-            for (int i = 0; i < duckRect.Count; i++)
-            {               
-                //move ducks
-                duckRect[i] = new Rectangle(duckRect[i].X + duckDX[i], duckRect[i].Y + duckDY[i], duckRect[i].Width, duckRect[i].Height);
-                //if checks if ducks are off screen
-                if (duckRect[i].Bottom <= -1 || duckRect[i].Top >= ground +1|| duckRect[i].Right <= -1 || duckRect[i].Left >= this.ClientSize.Width +1)
-                {
-                    //remove duck from each list
-                    duckRect.RemoveAt(i);
-                    duckDX.RemoveAt(i);
-                    duckDY.RemoveAt(i);
-                }
-            }
+            //method moves ducks and removes any that are off screen
+            MoveDucks();
             //if to run when game has started
             if (round > 0)
             {
@@ -473,6 +463,24 @@ namespace LoftusFinalProject
                     duckRect.Add(new Rectangle(-100, ranNum.Next(Convert.ToInt32(ground)), 100, 100));
                     duckDX.Add(10);
                     duckDY.Add(0);
+                }
+            }
+        }
+
+        private void MoveDucks()
+        {
+            //run through duck lists
+            for (int i = 0; i < duckRect.Count; i++)
+            {
+                //move ducks
+                duckRect[i] = new Rectangle(duckRect[i].X + duckDX[i], duckRect[i].Y + duckDY[i], duckRect[i].Width, duckRect[i].Height);
+                //if checks if ducks are off screen
+                if (duckRect[i].Bottom <= -1 || duckRect[i].Top >= ground + 1 || duckRect[i].Right <= -1 || duckRect[i].Left >= this.ClientSize.Width + 1)
+                {
+                    //remove duck from each list
+                    duckRect.RemoveAt(i);
+                    duckDX.RemoveAt(i);
+                    duckDY.RemoveAt(i);
                 }
             }
         }
